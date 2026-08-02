@@ -1,0 +1,4 @@
+neighborhood_name,file_name,center_lat,center_lon,radius_miles,sample_size
+Richmond - North & East,richmond_-_north_&_east_sales.csv,37.943721262,-122.33781405,2.5,51
+Richmond -North & East,richmond_-north_&_east_sales.csv,37.943721262,-122.33781405,2.5,51
+SF- Visitation Valley ,sf-_visitation_valley__sales.csv,37.71297847,-122.40697557499998,2.5,21
