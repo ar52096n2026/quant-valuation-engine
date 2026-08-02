@@ -238,26 +238,57 @@ def geocode_address(address_str):
 
 def clean_html(text):
     return '\n'.join(line.lstrip() for line in text.splitlines())
-
 # ==============================================================================
-# 4. DATA PROCESSING & RIDGE REGRESSION MODEL
+# 4. DATA PROCESSING & RIDGE REGRESSION MODEL (PATCHED)
 # ==============================================================================
 @st.cache_data
 def process_dataset(file_source):
     df = pd.read_csv(file_source)
-    if "SALE TYPE" in df.columns and pd.isna(df.iloc[0]['SOLD DATE']):
+    
+    # 1. Normalize column headers (uppercase & stripped)
+    df.columns = [str(col).strip().upper() for col in df.columns]
+    
+    # 2. Map common Redfin / MLS column name variations
+    col_aliases = {
+        'SQFT': 'SQUARE FEET',
+        'SQ FT': 'SQUARE FEET',
+        'SQUAREFEET': 'SQUARE FEET',
+        'PRICE ($)': 'PRICE',
+        'LOT': 'LOT SIZE',
+        'YEARBUILT': 'YEAR BUILT',
+        'LAT': 'LATITUDE',
+        'LON': 'LONGITUDE',
+        'LNG': 'LONGITUDE',
+        'PROPERTYSUBTYPE': 'PROPERTY TYPE'
+    }
+    df = df.rename(columns=col_aliases)
+
+    if "SALE TYPE" in df.columns and pd.isna(df.iloc[0].get('SOLD DATE', np.nan)):
         df = df.drop(index=0)
        
-    num_cols = ['PRICE', 'BEDS', 'BATHS', 'SQUARE FEET', 'LOT SIZE', 'YEAR BUILT', 'LATITUDE', 'LONGITUDE', '$/SQUARE FEET']
+    num_cols = ['PRICE', 'BEDS', 'BATHS', 'SQUARE FEET', 'LOT SIZE', 'YEAR BUILT', 'LATITUDE', 'LONGITUDE']
     for col in num_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
            
-    df['SOLD DATE'] = pd.to_datetime(df['SOLD DATE'], errors='coerce')
+    if '$/SQUARE FEET' not in df.columns and 'PRICE' in df.columns and 'SQUARE FEET' in df.columns:
+        df['$/SQUARE FEET'] = df['PRICE'] / df['SQUARE FEET']
+
+    if 'SOLD DATE' in df.columns:
+        df['SOLD DATE'] = pd.to_datetime(df['SOLD DATE'], errors='coerce')
+    else:
+        df['SOLD DATE'] = pd.Timestamp.now()
    
-    clean_df = df[(df['PROPERTY TYPE'] == 'Single Family Residential') &
-                  (df['PRICE'].notnull()) &
-                  (df['$/SQUARE FEET'] >= 300)].copy()
+    # 3. Flexible filtering mask
+    mask = (df['PRICE'].notnull()) & (df['SQUARE FEET'] > 0)
+    
+    # Optional property type filter (case-insensitive)
+    if 'PROPERTY TYPE' in df.columns:
+        prop_mask = df['PROPERTY TYPE'].astype(str).str.contains('Single|Residential|Home', case=False, na=False)
+        if prop_mask.sum() > 0:
+            mask = mask & prop_mask
+
+    clean_df = df[mask].copy()
    
     # Local Market Time Drift (+0.3% per month)
     today = pd.Timestamp.now()
@@ -267,10 +298,23 @@ def process_dataset(file_source):
    
     return clean_df
 
+
 def fit_dynamic_model(clean_df):
     features = ['SQUARE FEET', 'BATHS', 'LOT SIZE', 'YEAR BUILT']
+    
+    # Check if required columns exist
+    missing_cols = [col for col in features + ['TIME_ADJUSTED_PRICE'] if col not in clean_df.columns]
+    if missing_cols:
+        st.error(f"⚠️ Loaded dataset is missing required columns: **{', '.join(missing_cols)}**. Please check your CSV format.")
+        st.stop()
+        
     model_df = clean_df.dropna(subset=features + ['TIME_ADJUSTED_PRICE']).copy()
    
+    # Guardrail: Ensure at least 3 valid sales exist
+    if len(model_df) < 3:
+        st.error(f"⚠️ Insufficient sales data found ({len(model_df)} valid rows). A minimum of 3 valid sales matching the criteria are required to train the valuation model.")
+        st.stop()
+
     X = model_df[features]
     y = model_df['TIME_ADJUSTED_PRICE']
    
@@ -278,7 +322,8 @@ def fit_dynamic_model(clean_df):
     X_scaled = scaler.fit_transform(X)
    
     alphas = np.logspace(-2, 4, 50)
-    cv = KFold(n_splits=min(5, max(2, len(model_df)//3)), shuffle=True, random_state=42)
+    cv_splits = min(5, max(2, len(model_df) // 2))
+    cv = KFold(n_splits=cv_splits, shuffle=True, random_state=42)
     ridge = RidgeCV(alphas=alphas, cv=cv)
     ridge.fit(X_scaled, y)
    
