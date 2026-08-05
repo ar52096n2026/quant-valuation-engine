@@ -39,9 +39,38 @@ st.markdown("""
     padding-top: 1rem !important;
 }
 
-/* Force Streamlit Dialog / Modal Popups ABOVE WebGL Map Canvases */
-[data-testid="stDialog"], [data-testid="stModal"], div[data-baseweb="modal"], div[role="dialog"] {
+/* HIGH CONTRAST & LIGHT OVERRIDES FOR ST.DIALOG MODAL POPUPS (MOBILE DARK MODE PROOF) */
+[data-testid="stDialog"], 
+[data-testid="stModal"], 
+div[data-baseweb="modal"], 
+div[role="dialog"] {
     z-index: 9999999 !important;
+}
+
+div[data-baseweb="modal"] > div, 
+div[role="dialog"] > div,
+[data-testid="stDialog"] > div {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+[data-testid="stDialog"] *, 
+div[data-baseweb="modal"] *, 
+div[role="dialog"] * {
+    color: #1a1a1a !important;
+}
+
+[data-testid="stDialog"] [data-testid="stCaptionContainer"] p,
+div[data-baseweb="modal"] [data-testid="stCaptionContainer"] p {
+    color: #444444 !important;
+}
+
+div[data-baseweb="modal"] [data-baseweb="tab-list"] button {
+    color: #1a1a1a !important;
+    background-color: #f5f2ed !important;
+    border-radius: 4px !important;
+    margin-right: 4px !important;
+    font-weight: 600 !important;
 }
 
 /* Restrain PyDeck Chart Canvas Stacking Context */
@@ -80,20 +109,21 @@ input, select, textarea {
     border-color: #1a1a1a !important;
 }
 
-/* EXPANDER STYLING OVERRIDES (e.g. Renovation Scenario Planner Bar) */
+/* EXPANDER ACCORDION STYLING OVERRIDES */
 [data-testid="stExpander"] {
     background-color: #ffffff !important;
     border: 1px solid rgba(0, 0, 0, 0.18) !important;
     border-radius: 6px !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
     overflow: hidden !important;
+    margin-bottom: 0.75rem !important;
 }
 
 [data-testid="stExpander"] summary, details > summary {
     background-color: #f8f5f0 !important;
     color: #1a1a1a !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
-    padding: 0.75rem 1rem !important;
+    padding: 0.85rem 1rem !important;
 }
 
 [data-testid="stExpander"] summary p, 
@@ -487,7 +517,7 @@ def render_admin_portal():
         st.sidebar.error("Invalid PIN")
 
 # ==============================================================================
-# MODAL DIALOG: CONDITION CRITERIA & GLOSSARY
+# MODAL DIALOG: CONDITION CRITERIA & GLOSSARY (LIGHT-MODE FORCED)
 # ==============================================================================
 @st.dialog("📖 Property Condition & Valuation Guide", width="large")
 def show_condition_guide():
@@ -905,19 +935,13 @@ def main():
     st.divider()
 
     # ==============================================================================
-    # 7. EXPANDED EDITORIAL PRESENTATION ASSETS & TECHNICAL DECODER TABS
+    # 7. EXPANDED ACCORDION / FAQ STYLE PRESENTATION ASSETS & TECHNICAL DECODER
     # ==============================================================================
     st.markdown('<div class="editorial-section-title"><span class="editorial-section-dot"></span>📑 Presentation Assets & Technical Decoder</div>', unsafe_allow_html=True)
-    st.markdown('<div class="editorial-section-subtitle">Client-facing presentation talking points, leave-behind executive summaries, objection handling, and formal machine learning specifications.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="editorial-section-subtitle">Client-facing presentation talking points, leave-behind executive summaries, objection handling, and formal machine learning specifications. Tap any section below to expand:</div>', unsafe_allow_html=True)
 
-    tab1, tab2, tab3 = st.tabs([
-        "🎙️ Agent Presentation Script & Objection Handling",
-        "🎓 Client Summary Report (Leave-Behind)",
-        "🔬 Machine Learning Spec & Technical Decoder"
-    ])
-
-    # --- TAB 1: AGENT PRESENTATION SCRIPT & OBJECTION PLAYBOOK ---
-    with tab1:
+    # --- ACCORDION 1: AGENT PRESENTATION SCRIPT & OBJECTION PLAYBOOK ---
+    with st.expander("🎙️ Agent Presentation Script & Objection Handling", expanded=False):
         st.markdown(clean_html(f"""
         <div class="editorial-card">
             <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
@@ -973,8 +997,8 @@ def main():
         </div>
         """), unsafe_allow_html=True)
 
-    # --- TAB 2: CLIENT SUMMARY REPORT (LEAVE-BEHIND) ---
-    with tab2:
+    # --- ACCORDION 2: CLIENT SUMMARY REPORT (LEAVE-BEHIND) ---
+    with st.expander("🎓 Client Summary Report (Leave-Behind)", expanded=False):
         st.markdown(clean_html(f"""
         <div class="editorial-card">
             <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
@@ -1031,8 +1055,8 @@ def main():
         </div>
         """), unsafe_allow_html=True)
 
-    # --- TAB 3: MACHINE LEARNING SPEC & TECHNICAL DECODER ---
-    with tab3:
+    # --- ACCORDION 3: MACHINE LEARNING SPEC & TECHNICAL DECODER ---
+    with st.expander("🔬 Machine Learning Spec & Technical Decoder", expanded=False):
         st.markdown("### 🔬 Formal Mathematical Specification & Algorithmic Decoder")
         st.write("This tab outlines the complete mathematical framework powering the valuation pipeline, provided for technical auditability and institutional compliance.")
         
