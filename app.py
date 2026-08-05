@@ -93,18 +93,25 @@ input, select, textarea {
     -webkit-text-fill-color: #1a1a1a !important;
 }
 
-/* BUTTON STYLING OVERPOSITIONS (e.g. Open Condition Guide) */
+/* ACCORDION HEADER BUTTON STYLING OVERRIDES (LEFT ALIGNED & FULL WIDTH) */
 .stButton > button, [data-testid="stBaseButton-secondary"] {
-    background-color: #ffffff !important;
+    background-color: #f8f5f0 !important;
     color: #1a1a1a !important;
-    border: 1px solid rgba(0, 0, 0, 0.25) !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
-    min-height: 44px !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03) !important;
+    min-height: 46px !important;
     border-radius: 4px !important;
     font-weight: 700 !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin-bottom: 0.25rem !important;
 }
+
 .stButton > button:hover {
-    background-color: #f5f2ed !important;
+    background-color: #eee9e0 !important;
     color: #000000 !important;
     border-color: #1a1a1a !important;
 }
@@ -935,15 +942,35 @@ def main():
     st.divider()
 
     # ==============================================================================
-    # 7. EXPANDED ACCORDION / FAQ STYLE PRESENTATION ASSETS & TECHNICAL DECODER
+    # 7. MUTUALLY EXCLUSIVE SINGLE-OPEN ACCORDION / FAQ SECTION
     # ==============================================================================
     st.markdown('<div class="editorial-section-title"><span class="editorial-section-dot"></span>📑 Presentation Assets & Technical Decoder</div>', unsafe_allow_html=True)
-    st.markdown('<div class="editorial-section-subtitle">Client-facing presentation talking points, leave-behind executive summaries, objection handling, and formal machine learning specifications. Tap any section below to expand:</div>', unsafe_allow_html=True)
+    st.markdown('<div class="editorial-section-subtitle">Client-facing presentation talking points, leave-behind executive summaries, objection handling, and formal machine learning specifications. Tap any header below to expand:</div>', unsafe_allow_html=True)
 
-    # --- ACCORDION 1: AGENT PRESENTATION SCRIPT & OBJECTION PLAYBOOK ---
-    with st.expander("🎙️ Agent Presentation Script & Objection Handling", expanded=False):
+    # Initialize single-open state variable
+    if "active_decoder_section" not in st.session_state:
+        st.session_state.active_decoder_section = None
+
+    def toggle_decoder_section(sec_id):
+        if st.session_state.active_decoder_section == sec_id:
+            st.session_state.active_decoder_section = None
+        else:
+            st.session_state.active_decoder_section = sec_id
+
+    # --- ACCORDION ITEM 1 ---
+    is_sec1_open = (st.session_state.active_decoder_section == 1)
+    sec1_icon = "▼" if is_sec1_open else "▶"
+    st.button(
+        f"{sec1_icon} 🎙️ Agent Presentation Script & Objection Handling", 
+        key="btn_accordion_sec1", 
+        on_click=toggle_decoder_section, 
+        args=(1,), 
+        use_container_width=True
+    )
+
+    if is_sec1_open:
         st.markdown(clean_html(f"""
-        <div class="editorial-card">
+        <div class="editorial-card" style="margin-bottom: 1rem;">
             <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
                 Agent Pitch Script & Client Meeting Playbook
             </h3>
@@ -997,10 +1024,20 @@ def main():
         </div>
         """), unsafe_allow_html=True)
 
-    # --- ACCORDION 2: CLIENT SUMMARY REPORT (LEAVE-BEHIND) ---
-    with st.expander("🎓 Client Summary Report (Leave-Behind)", expanded=False):
+    # --- ACCORDION ITEM 2 ---
+    is_sec2_open = (st.session_state.active_decoder_section == 2)
+    sec2_icon = "▼" if is_sec2_open else "▶"
+    st.button(
+        f"{sec2_icon} 🎓 Client Summary Report (Leave-Behind)", 
+        key="btn_accordion_sec2", 
+        on_click=toggle_decoder_section, 
+        args=(2,), 
+        use_container_width=True
+    )
+
+    if is_sec2_open:
         st.markdown(clean_html(f"""
-        <div class="editorial-card">
+        <div class="editorial-card" style="margin-bottom: 1rem;">
             <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
                 Institutional Comparative Market Analysis (CMA) Summary
             </h3>
@@ -1055,12 +1092,28 @@ def main():
         </div>
         """), unsafe_allow_html=True)
 
-    # --- ACCORDION 3: MACHINE LEARNING SPEC & TECHNICAL DECODER ---
-    with st.expander("🔬 Machine Learning Spec & Technical Decoder", expanded=False):
-        st.markdown("### 🔬 Formal Mathematical Specification & Algorithmic Decoder")
-        st.write("This tab outlines the complete mathematical framework powering the valuation pipeline, provided for technical auditability and institutional compliance.")
-        
-        st.divider()
+    # --- ACCORDION ITEM 3 ---
+    is_sec3_open = (st.session_state.active_decoder_section == 3)
+    sec3_icon = "▼" if is_sec3_open else "▶"
+    st.button(
+        f"{sec3_icon} 🔬 Machine Learning Spec & Technical Decoder", 
+        key="btn_accordion_sec3", 
+        on_click=toggle_decoder_section, 
+        args=(3,), 
+        use_container_width=True
+    )
+
+    if is_sec3_open:
+        st.markdown("""
+        <div class="editorial-card" style="margin-bottom: 1rem;">
+            <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 0.5rem;">
+                Formal Mathematical Specification & Algorithmic Decoder
+            </h3>
+            <p style="font-size: 0.9rem; color: #444444; margin-bottom: 1rem;">
+                This section outlines the complete mathematical framework powering the valuation pipeline, provided for technical auditability and institutional compliance.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
         # 1. RIDGE REGRESSION
         st.markdown("#### 1. Regularized Ridge Regression ($L_2$ Penalty)")
