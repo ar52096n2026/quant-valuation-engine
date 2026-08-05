@@ -829,79 +829,175 @@ def main():
 
     st.divider()
 
-    # --- EDITORIAL TABS (CLEAN SEPARATION OF HTML & LATEX) ---
+    # ==============================================================================
+    # 7. EXPANDED EDITORIAL PRESENTATION ASSETS & TECHNICAL DECODER TABS
+    # ==============================================================================
     st.markdown('<div class="editorial-section-title"><span class="editorial-section-dot"></span>📑 Presentation Assets & Technical Decoder</div>', unsafe_allow_html=True)
-    st.markdown('<div class="editorial-section-subtitle">Client-facing presentation talking points, leave-behind executive summaries, and formal machine learning specifications.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="editorial-section-subtitle">Client-facing presentation talking points, leave-behind executive summaries, objection handling, and formal machine learning specifications.</div>', unsafe_allow_html=True)
 
     tab1, tab2, tab3 = st.tabs([
-        "🎙️ Agent Presentation Script (Client Talking Points)",
+        "🎙️ Agent Presentation Script & Objection Handling",
         "🎓 Client Summary Report (Leave-Behind)",
         "🔬 Machine Learning Spec & Technical Decoder"
     ])
 
+    # --- TAB 1: AGENT PRESENTATION SCRIPT & OBJECTION PLAYBOOK ---
     with tab1:
         st.markdown(clean_html(f"""
         <div class="editorial-card">
             <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
-                Agent Meeting Script & Objection Handling Playbook
+                Agent Pitch Script & Client Meeting Playbook
             </h3>
+            
             <div style="margin-bottom: 1.75rem; background-color: #f5f2ed; padding: 1.25rem; border-left: 3px solid #1a1a1a; border-radius: 4px;">
                 <h4 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; color: #1a1a1a; margin-bottom: 0.5rem;">
-                    💬 How to Introduce This Engine
+                    💬 1. Opening Narrative: Why This Valuation is Superior
                 </h4>
                 <p style="font-size: 0.95rem; line-height: 1.6; color: #2d2d2d; margin-bottom: 0;">
-                    "Most online valuation tools are 'black boxes'—they blindly average random homes without accounting for micro-location, market timing, or property condition. What I've brought today is a custom <strong>Quantitative Valuation Engine</strong> calibrated specifically to our micro-neighborhood using <strong>{n_sales} recent local sales</strong>. It removes human bias and shows us exactly what buyers in today's market are paying for every square foot, bedroom, and bathroom."
+                    "Most consumer real estate sites use 'black box' algorithms that blindly average homes across entire zip codes without inspecting interior quality, market timing, or exact GPS proximity. What I've brought today is a custom <strong>Quantitative Valuation Engine</strong> calibrated specifically to our micro-neighborhood using <strong>{n_sales} verified recent sales</strong>. It removes subjective bias and reveals exactly what buyers in today's market are paying for square footage, room counts, and condition upgrades."
                 </p>
             </div>
+
             <div style="margin-bottom: 1.75rem;">
                 <h4 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; color: #0284c7; margin-bottom: 0.75rem;">
-                    🎯 Walking the Client Through Their Price
+                    🎯 2. Walking the Client Through Their 3-Tier Price
                 </h4>
-                <ul style="font-size: 0.95rem; line-height: 1.7; margin-left: 1.25rem; color: #2d2d2d;">
-                    <li><strong>The Estimated Value (${reconciled_val:,.0f}):</strong> "This is our fair market baseline based on current buyer purchasing power today."</li>
-                    <li><strong>The Fast-Sale Floor (${floor_val:,.0f}):</strong> "If we need to sell quickly or if market traffic slows down, this is our defensible lower boundary."</li>
-                    <li><strong>The Peak Value Ceiling (${ceiling_val:,.0f}):</strong> "If we stage the home impeccably, market aggressively, and generate multiple competitive offers, this is our realistic top target."</li>
+                <ul style="font-size: 0.95rem; line-height: 1.7; margin-left: 1.25rem; color: #2d2d2d; padding-left: 0;">
+                    <li><strong>🎯 Estimated Fair Market Value (${reconciled_val:,.0f}):</strong> "This represents our primary target baseline under normal market exposure and standard buyer purchasing power today."</li>
+                    <li><strong>🛡️ Fast-Sale Floor (${floor_val:,.0f}):</strong> "If you need a guaranteed rapid liquidity sale or if broader interest rates soften, this is our defensible lower boundary."</li>
+                    <li><strong>🚀 Peak Value Ceiling (${ceiling_val:,.0f}):</strong> "If we professional-stage the property, execute aggressive multi-channel marketing, and drive multiple competing offers, this represents our realistic top target."</li>
                 </ul>
+            </div>
+
+            <div style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.25rem;">
+                <h4 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; color: #dc2626; margin-bottom: 1rem;">
+                    🛡️ 3. Objection Handling Playbook
+                </h4>
+                
+                <div style="margin-bottom: 1rem; background-color: #fafafa; padding: 1rem; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px;">
+                    <strong style="color: #1a1a1a;">Objection:</strong> <em>"An online site (e.g. Zillow or Redfin) says my home is worth $50,000 more!"</em><br>
+                    <span style="color: #2d2d2d; font-size: 0.92rem; line-height: 1.5;">
+                        <strong>Script Response:</strong> "Automated online algorithms cannot walk through your front door. They treat an unrenovated 1950s kitchen the same as a $100k custom quartz rebuild next door. Our engine uses local Ridge Regression to isolate physical size from interior condition quality, giving us an honest appraisal that mortgage lenders will actually approve."
+                    </span>
+                </div>
+
+                <div style="margin-bottom: 1rem; background-color: #fafafa; padding: 1rem; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px;">
+                    <strong style="color: #1a1a1a;">Objection:</strong> <em>"Why aren't you including that record sale 1 mile away across the main boulevard?"</em><br>
+                    <span style="color: #2d2d2d; font-size: 0.92rem; line-height: 1.5;">
+                        <strong>Script Response:</strong> "Real estate value decays rapidly over distance. Crossing major thoroughfares or school districts changes buyer demographics. Our model uses Inverse Distance Weighting, prioritizing the closest 4 homes within our micro-pocket to ensure your listing is priced against true direct competitors."
+                    </span>
+                </div>
+
+                <div style="background-color: #fafafa; padding: 1rem; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px;">
+                    <strong style="color: #1a1a1a;">Objection:</strong> <em>"How do we reach the Peak Value Ceiling?"</em><br>
+                    <span style="color: #2d2d2d; font-size: 0.92rem; line-height: 1.5;">
+                        <strong>Script Response:</strong> "Hitting the 5% ceiling (${ceiling_val:,.0f}) requires eliminating all buyer hesitation points: professional staging, turnkey interior condition, pristine curb appeal, and an aggressive launch strategy that generates offer competition during week one."
+                    </span>
+                </div>
             </div>
         </div>
         """), unsafe_allow_html=True)
 
+    # --- TAB 2: CLIENT SUMMARY REPORT (LEAVE-BEHIND) ---
     with tab2:
         st.markdown(clean_html(f"""
         <div class="editorial-card">
             <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: #1a1a1a; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.5rem;">
-                Valuation Methodology & Execution Workflow
+                Institutional Comparative Market Analysis (CMA) Summary
             </h3>
             <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: rgba(0,0,0,0.7);">
-                This valuation report replaces traditional guesswork with a transparent, data-driven algorithm calibrated specifically to this micro-neighborhood. Here is how your estimate of <strong>${reconciled_val:,.0f}</strong> was derived:
+                This executive report replaces intuitive guesswork with a transparent, 4-step mathematical valuation process calibrated specifically to <strong>{matched_neigh_name}</strong>. Below is the step-by-step methodology used to establish your baseline target of <strong>${reconciled_val:,.0f}</strong>:
             </p>
+            
             <div style="background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-left: 4px solid #1a1a1a; padding: 1.25rem; margin-bottom: 1rem; border-radius: 4px;">
-                <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #1a1a1a; margin: 0 0 0.5rem 0;">STEP 01: Micro-Neighborhood Sample & Time Normalization</h4>
+                <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #1a1a1a; margin: 0 0 0.5rem 0;">STEP 01: Micro-Neighborhood Data Ingestion & Time Normalization</h4>
                 <p style="font-size: 0.92rem; line-height: 1.6; color: #333333; margin: 0;">
-                    The model analyzed <strong>{n_sales} recent single-family sales</strong>. Older sales are automatically normalized for market time drift (+0.3% per month) so all comparisons reflect current purchasing power today.
+                    The model evaluated <strong>{n_sales} verified historical sales</strong> in this micro-pocket. To account for market inflation or shifts over time, historical sales are time-normalized at <strong>+0.3% per month</strong> to match today's current purchasing power.
                 </p>
             </div>
+
             <div style="background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-left: 4px solid #0284c7; padding: 1.25rem; margin-bottom: 1rem; border-radius: 4px;">
-                <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #1a1a1a; margin: 0 0 0.5rem 0;">STEP 02: Unbiased Comparable Matching</h4>
+                <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #1a1a1a; margin: 0 0 0.5rem 0;">STEP 02: Unbiased Composite Proximity Matching</h4>
                 <p style="font-size: 0.92rem; line-height: 1.6; color: #333333; margin: 0;">
-                    The algorithm evaluates sales using a dual <strong>Composite Distance Metric</strong> combining <strong>70% Geographic Proximity</strong> (GPS coordinates in miles) with <strong>30% Footprint Match</strong> (living area size similarity).
+                    Rather than picking random sales, the engine uses a dual <strong>Composite KNN Distance Metric</strong> combining <strong>70% Geographic Geodesic Proximity</strong> (GPS distance) and <strong>30% Footprint Matching</strong> (square footage similarity) to isolate the 4 truest comparable properties.
+                </p>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-left: 4px solid #16a34a; padding: 1.25rem; margin-bottom: 1rem; border-radius: 4px;">
+                <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #1a1a1a; margin: 0 0 0.5rem 0;">STEP 03: Feature-by-Feature Hedonic Adjustments</h4>
+                <p style="font-size: 0.92rem; line-height: 1.6; color: #333333; margin: 0;">
+                    Each matched comp is adjusted up or down to reflect the exact physical specifications of your subject home:
+                </p>
+                <ul style="font-size: 0.88rem; line-height: 1.6; color: #444444; margin-top: 0.5rem; margin-bottom: 0;">
+                    <li><strong>Living Area:</strong> Adjusting for footprint difference at <strong>${coefs['SQUARE FEET']:,.0f}/SqFt</strong>.</li>
+                    <li><strong>Bathrooms:</strong> Adjusting for bathroom count difference at <strong>${coefs['BATHS']:,.0f}/Bath</strong>.</li>
+                    <li><strong>Condition Tier:</strong> Adjusting for interior finish level (Turnkey: +15%, Updated: +7%, Average: 0%, Dated: -7%, Fixer: -15%).</li>
+                </ul>
+            </div>
+
+            <div style="background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-left: 4px solid #dc2626; padding: 1.25rem; margin-bottom: 1.5rem; border-radius: 4px;">
+                <h4 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #1a1a1a; margin: 0 0 0.5rem 0;">STEP 04: Inverse Distance Weighting (IDW) Reconciliation</h4>
+                <p style="font-size: 0.92rem; line-height: 1.6; color: #333333; margin: 0;">
+                    Final target price is calculated using Inverse Distance Weighting, giving exponentially more mathematical weight to the homes sitting closest to your front door.
+                </p>
+            </div>
+
+            <div style="background-color: #f5f2ed; padding: 1.25rem; border-radius: 4px; text-align: center;">
+                <h4 style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem;">
+                    📋 Executive Leave-Behind Summary
+                </h4>
+                <p style="font-size: 1.1rem; font-family: 'Playfair Display', serif; font-weight: 600; color: #1a1a1a; margin: 0;">
+                    Recommended Listing Strategy: <strong>${reconciled_val:,.0f}</strong>  
+                    <span style="font-size: 0.85rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; color: rgba(0,0,0,0.6); display: block;">
+                        Range: ${floor_val:,.0f} (Fast Liquidity) — ${ceiling_val:,.0f} (Aggressive Staging Peak)
+                    </span>
                 </p>
             </div>
         </div>
         """), unsafe_allow_html=True)
 
+    # --- TAB 3: MACHINE LEARNING SPEC & TECHNICAL DECODER ---
     with tab3:
-        st.markdown("### 🔬 Formal Mathematical Specification")
-        st.write("To prevent multicollinearity variance between correlated features, parameters are solved via $L_2$-Regularized Ridge Regression:")
-        
-        # PROPER STREAMLIT LATEX RENDERER (OUTSIDE HTML)
-        st.latex(r"\min_{w} \sum_{i=1}^{n} \left( y_i - w_0 - \sum_{j=1}^{p} x_{ij}w_j \right)^2 + \alpha \sum_{j=1}^{p} w_j^2")
-        st.caption(f"Tuned Regularization Penalty (α = {best_alpha:.4f}) solved via 5-Fold Cross Validation.")
+        st.markdown("### 🔬 Formal Mathematical Specification & Algorithmic Decoder")
+        st.write("This tab outlines the complete mathematical framework powering the valuation pipeline, provided for technical auditability and institutional compliance.")
         
         st.divider()
-        st.markdown("### 📐 Spatial & Footprint Composite KNN Distance Metric")
-        st.latex(r"D_{\text{comp}} = 0.70 \cdot d_{\text{geodesic}} + 0.30 \cdot d_{\text{footprint}}")
-        st.write("Comparable selection employs a dual-component composite spatial metric combining Haversine distance with normalized footprint deviation.")
+
+        # 1. RIDGE REGRESSION
+        st.markdown("#### 1. Regularized Ridge Regression ($L_2$ Penalty)")
+        st.write("To handle small sample sizes and multicollinearity between correlated features (such as square footage and bathroom counts), feature weights are solved via $L_2$-Regularized Ridge Regression:")
+        st.latex(r"\hat{\beta} = \arg\min_{\beta} \sum_{i=1}^{N} \left( y_i - x_i^T \beta \right)^2 + \alpha \sum_{j=1}^{p} \beta_j^2")
+        st.caption(f"Current Model Hyperparameter: Tuned Regularization Penalty (α = {best_alpha:.4f}) solved dynamically via 5-Fold Cross Validation.")
+
+        st.divider()
+
+        # 2. HAVERSINE DISTANCE
+        st.markdown("#### 2. Great-Circle Haversine Spatial Geodesic Distance")
+        st.write("Exact spherical distance between latitude/longitude coordinate pairs on Earth's surface ($r = 3,958.8\text{ miles}$):")
+        st.latex(r"d = 2r \arcsin \left( \sqrt{\sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)} \right)")
+
+        st.divider()
+
+        # 3. COMPOSITE KNN DISTANCE
+        st.markdown("#### 3. Composite Spatial & Footprint KNN Metric")
+        st.write("Comparable selection employs a dual-component composite spatial distance metric combining geographic proximity with normalized living area footprint deviation:")
+        st.latex(r"D_{\text{comp}} = 0.70 \cdot d_{\text{geodesic}} + 0.30 \cdot \left( \frac{| \text{SqFt}_{\text{subject}} - \text{SqFt}_{\text{comp}} |}{\sigma_{\text{SqFt}}} \right)")
+
+        st.divider()
+
+        # 4. INVERSE DISTANCE WEIGHTING (IDW)
+        st.markdown("#### 4. Inverse Distance Weighting (IDW) Target Reconciliation")
+        st.write("Final target price is synthesized across the $k$ nearest comps by applying Inverse Distance Weighting ($w_i$), ensuring closest comps dominate valuation:")
+        st.latex(r"w_i = \frac{1}{d_i + \epsilon}, \quad \hat{Y}_{\text{target}} = \sum_{i=1}^{k} \hat{w}_i \cdot Y_i^{\text{adjusted}}")
+
+        st.divider()
+
+        # 5. SANITY GUARDS & BOUNDS
+        st.markdown("#### 5. Numerical Stability & Variance Guardrails")
+        st.info("""
+        * **Zero-Variance Guard:** Prevents near-zero scale division (`scaler.scale_ < 1e-4`) when standard deviations collapse in micro-datasets.
+        * **Coefficient Clamping:** Bounds parameter weights to real-world appraisal limits (e.g. Living Area constrained between $20/SqFt and $1,500/SqFt).
+        """)
 
 if __name__ == "__main__":
     main()
