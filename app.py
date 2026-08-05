@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
 
 # ==============================================================================
-# 1. APP CONFIGURATION & RESPONSIVE MOBILE STYLING
+# 1. APP CONFIGURATION & RESPONSIVE MOBILE STYLING (DARK MODE PROOF)
 # ==============================================================================
 st.set_page_config(
     page_title="Quant Valuation Engine", 
@@ -24,8 +24,9 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:wght@400;600&display=swap');
 
-/* Main App Canvas */
-.stApp {
+/* Force Light Color-Scheme globally to override Mobile OS Dark Mode Inversion */
+:root, html, body, .stApp {
+    color-scheme: light !important;
     background-color: #fcfaf7 !important;
     color: #1a1a1a !important;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
@@ -49,7 +50,63 @@ st.markdown("""
     z-index: 1 !important;
 }
 
-/* Responsive Metric Cards with CSS Clamp (Prevents Overflow) */
+/* Hard Light Overrides for Input Boxes (Prevents Black Box Effect on Mobile) */
+div[data-baseweb="input"], div[data-baseweb="select"], div[data-baseweb="base-input"] {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    border-radius: 4px !important;
+}
+
+input, select, textarea {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    -webkit-text-fill-color: #1a1a1a !important;
+}
+
+/* BUTTON STYLING OVERPOSITIONS (e.g. Open Condition Guide) */
+.stButton > button, [data-testid="stBaseButton-secondary"] {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    min-height: 44px !important;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+}
+.stButton > button:hover {
+    background-color: #f5f2ed !important;
+    color: #000000 !important;
+    border-color: #1a1a1a !important;
+}
+
+/* EXPANDER STYLING OVERRIDES (e.g. Renovation Scenario Planner Bar) */
+[data-testid="stExpander"] {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.18) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stExpander"] summary, details > summary {
+    background-color: #f8f5f0 !important;
+    color: #1a1a1a !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding: 0.75rem 1rem !important;
+}
+
+[data-testid="stExpander"] summary p, 
+[data-testid="stExpander"] summary span, 
+[data-testid="stExpander"] summary svg,
+details summary p, details summary span, details summary svg {
+    color: #1a1a1a !important;
+    fill: #1a1a1a !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+}
+
+/* Responsive Metric Cards with CSS Clamp */
 [data-testid="stMetric"] {
     background-color: #ffffff !important;
     border-left: 3px solid #1a1a1a !important;
@@ -168,16 +225,6 @@ div[data-baseweb="select"] span, div[data-baseweb="input"] input {
     border-radius: 50%;
     border: 1.5px solid #ffffff;
     box-shadow: 0 0 0 1px #0284c7;
-}
-
-/* Touch Target Enhancements for Mobile Inputs */
-.stButton > button {
-    min-height: 44px !important;
-    border-radius: 4px !important;
-    font-weight: 600 !important;
-}
-div[data-baseweb="input"] {
-    min-height: 44px !important;
 }
 
 /* Mobile Responsiveness Breakpoints */
@@ -917,7 +964,7 @@ def main():
                 </div>
 
                 <div style="background-color: #fafafa; padding: 1rem; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px;">
-                    <strong style="color: #1a1a1a;">Objection:</strong>  stream<em style="color: #1a1a1a;">"How do we reach the Peak Value Ceiling?"</em><br>
+                    <strong style="color: #1a1a1a;">Objection:</strong> <em>"How do we reach the Peak Value Ceiling?"</em><br>
                     <span style="color: #2d2d2d; font-size: 0.92rem; line-height: 1.5;">
                         <strong>Script Response:</strong> "Hitting the 5% ceiling (${ceiling_val:,.0f}) requires eliminating all buyer hesitation points: professional staging, turnkey interior condition, pristine curb appeal, and an aggressive launch strategy that generates offer competition during week one."
                     </span>
