@@ -31,7 +31,7 @@ st.markdown("""
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-/* Sidebar Styling */
+/* Sidebar Styling & Default Collapsed Reinforcement */
 [data-testid="stSidebar"] {
     background-color: #f5f2ed !important;
     border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
@@ -67,7 +67,7 @@ st.markdown("""
     text-transform: uppercase !important;
     letter-spacing: 0.14em !important;
     font-weight: 800 !important;
-    color: rgba(0, 0, 0, 0.5) !important;
+    color: #333333 !important;
 }
 [data-testid="stMetricValue"] {
     font-family: 'Playfair Display', serif !important;
@@ -84,7 +84,7 @@ st.markdown("""
     color: #0284c7 !important;
 }
 
-/* Section Subtitles & Headers */
+/* High-Contrast Section Subtitles & Headers */
 .editorial-section-title {
     font-size: 12px;
     font-weight: 800;
@@ -97,10 +97,11 @@ st.markdown("""
     margin-bottom: 0.25rem;
 }
 .editorial-section-subtitle {
-    font-size: 0.85rem;
-    color: rgba(0, 0, 0, 0.65);
+    font-size: 0.88rem;
+    color: #2b2b2b !important;
+    font-weight: 500;
     margin-bottom: 0.85rem;
-    line-height: 1.4;
+    line-height: 1.45;
 }
 .editorial-section-dot {
     width: 7px;
@@ -118,6 +119,20 @@ st.markdown("""
     font-size: 1rem;
     line-height: 1.6;
     color: #1a1a1a;
+}
+
+/* HIGH-LEGIBILITY FORM LABELS & INPUT CONTROLS FOR MOBILE */
+[data-testid="stWidgetLabel"] label, [data-testid="stWidgetLabel"] p, .stWidgetLabel p {
+    color: #111111 !important;
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    margin-bottom: 0.35rem !important;
+}
+
+div[data-baseweb="select"] span, div[data-baseweb="input"] input {
+    color: #1a1a1a !important;
+    font-weight: 600 !important;
 }
 
 /* Custom Map Legend Styling */
@@ -155,7 +170,7 @@ st.markdown("""
     box-shadow: 0 0 0 1px #0284c7;
 }
 
-/* Touch Target Enhancements for Buttons & Inputs */
+/* Touch Target Enhancements for Mobile Inputs */
 .stButton > button {
     min-height: 44px !important;
     border-radius: 4px !important;
@@ -182,8 +197,12 @@ div[data-baseweb="input"] {
         margin-bottom: 0.5rem !important;
         padding: 0.75rem 0.85rem !important;
     }
+    [data-testid="stWidgetLabel"] label, [data-testid="stWidgetLabel"] p {
+        font-size: 0.92rem !important;
+        color: #000000 !important;
+    }
     .stNumberInput, .stSelectbox, .stSlider {
-        margin-bottom: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
     }
     .stButton > button {
         width: 100% !important;
@@ -745,7 +764,7 @@ def main():
     
     st.dataframe(comps_display, use_container_width=True)
 
-    # --- COMPACT SPATIAL PYDECK MAP WITH UNMISTAKABLE MARKERS & LEGEND ---
+    # --- COMPACT SPATIAL PYDECK MAP WITH CLEAN, SANITIZED TOOLTIPS ---
     st.markdown('<div class="editorial-section-title" style="margin-top: 1rem;"><span class="editorial-section-dot"></span>🗺️ Micro-Neighborhood Proximity Map</div>', unsafe_allow_html=True)
     st.markdown('<div class="editorial-section-subtitle">Spatial map displaying the subject property relative to nearby historical comp sales used to train the local model.</div>', unsafe_allow_html=True)
     
@@ -763,12 +782,14 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # SUBJECT PROPERTY LAYER (Vibrant Crimson Red, Larger Size)
+    # SUBJECT PROPERTY LAYER (Clean Data Properties for HTML Template)
     subject_df = pd.DataFrame([{
-        'ADDRESS': subject_address, 
+        'HEADER': '🎯 SUBJECT PROPERTY',
+        'ADDRESS': str(subject_address), 
         'LATITUDE': float(t_lat), 
         'LONGITUDE': float(t_lon),
-        'LABEL': f"🎯 SUBJECT PROPERTY<br><b>{subject_address}</b><br>Footprint: {eval_sqft:,} SqFt | Condition: {eval_condition}"
+        'INFO_LINE_1': f"Footprint: {eval_sqft:,} SqFt",
+        'INFO_LINE_2': f"Condition: {eval_condition}"
     }])
 
     subject_layer = pdk.Layer(
@@ -786,12 +807,14 @@ def main():
         radius_max_pixels=28
     )
 
-    # COMP SALES LAYER (Oceanic Blue, Smaller Size)
+    # COMP SALES LAYER (Clean Data Properties for HTML Template)
     comp_rows = [{
+        'HEADER': '🔹 COMP SALE',
         'ADDRESS': str(row['ADDRESS']), 
         'LATITUDE': float(row['LATITUDE']), 
         'LONGITUDE': float(row['LONGITUDE']),
-        'LABEL': f"🔹 COMP SALE<br><b>{row['ADDRESS']}</b><br>Sold Price: ${row['PRICE']:,.0f}<br>Proximity: {row['dist_miles']:.2f} miles away"
+        'INFO_LINE_1': f"Sold Price: ${row['PRICE']:,.0f}",
+        'INFO_LINE_2': f"Proximity: {row['dist_miles']:.2f} miles away"
     } for _, row in closest_comps.iterrows()]
 
     comps_df = pd.DataFrame(comp_rows)
@@ -819,7 +842,12 @@ def main():
             initial_view_state=initial_view, 
             map_style="light",
             tooltip={
-                "html": "<div style='max-width: 220px; white-space: normal; z-index: 999999;'>{LABEL}</div>", 
+                "html": "<div style='max-width: 220px; white-space: normal; line-height: 1.4;'>"
+                        "<div><b>{HEADER}</b></div>"
+                        "<div><b>{ADDRESS}</b></div>"
+                        "<div>{INFO_LINE_1}</div>"
+                        "<div>{INFO_LINE_2}</div>"
+                        "</div>", 
                 "style": {"backgroundColor": "#1a1a1a", "color": "#ffffff", "fontSize": "12px", "padding": "8px 12px", "borderRadius": "4px"}
             }
         ),
@@ -889,7 +917,7 @@ def main():
                 </div>
 
                 <div style="background-color: #fafafa; padding: 1rem; border: 1px solid rgba(0,0,0,0.08); border-radius: 4px;">
-                    <strong style="color: #1a1a1a;">Objection:</strong> <em>"How do we reach the Peak Value Ceiling?"</em><br>
+                    <strong style="color: #1a1a1a;">Objection:</strong>  stream<em style="color: #1a1a1a;">"How do we reach the Peak Value Ceiling?"</em><br>
                     <span style="color: #2d2d2d; font-size: 0.92rem; line-height: 1.5;">
                         <strong>Script Response:</strong> "Hitting the 5% ceiling (${ceiling_val:,.0f}) requires eliminating all buyer hesitation points: professional staging, turnkey interior condition, pristine curb appeal, and an aggressive launch strategy that generates offer competition during week one."
                     </span>
