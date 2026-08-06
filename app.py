@@ -582,9 +582,13 @@ def show_condition_guide():
 # 6. MAIN APPLICATION & SEARCH UI
 # ==============================================================================
 def main():
+    # --- RENDER SIDEBAR ADMIN PORTAL FIRST (ALWAYS EXECUTED) ---
+    render_admin_portal()
+    st.sidebar.markdown("---")
+
     manifest_df = get_manifest()
 
-    # --- SIDEBAR: OPTIONAL CSV SELECTOR & ADMIN PORTAL ---
+    # --- SIDEBAR: CSV SELECTOR ---
     st.sidebar.markdown("### 📂 Load Existing CSV Property")
     
     active_dataset_file = None
@@ -609,11 +613,8 @@ def main():
             index=0
         )
     else:
-        st.info("👈 Please open the **Agent Admin Portal** in the sidebar to upload a CSV dataset!")
+        st.info("👈 Please open the **Agent Admin Portal** in the sidebar (or top-left arrow on mobile) to upload a CSV dataset!")
         st.stop()
-
-    st.sidebar.markdown("---")
-    render_admin_portal()
 
     # --- MAIN CANVAS HEADER ---
     st.markdown("""
